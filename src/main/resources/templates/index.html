@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #35485e;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 20px auto;
+            min-width: 500px;
+            max-width: 600px;
+        }
+
+        footer {
+            background-color: #8593a6;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        label[for = "cv"]{
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .file-upload {
+            text-align: center;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 30px 10px;
+            width: 90%;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .file-upload label {
+            color: #35485e;
+        }
+
+        button {
+            background-color: #35485e;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #293c50;
+        }
+        progress {
+            width: 100%;
+            bottom: 5px;
+            left: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lazy Company</h1>
+    </header>
+    <div class="container">
+        <form action="submitApplication" method="post" enctype="multipart/form-data">
+            <label for="name">First Name:</label>
+            <input type="text" id="name" name="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <div class="file-upload" id="fileUpload">
+                <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+                <label for="cv" id="cvLabel">Drag & Drop or Click to Upload CV</label>
+                <progress id="fileProgress" value="0" max="100"></progress>
+            </div>
+
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+    <footer>
+
+    </footer>
+    <script>
+        const fileUpload = document.getElementById('fileUpload');
+        const cvInput = document.getElementById('cv');
+        const cvLabel = document.getElementById('cvLabel');
+        const fileProgress = document.getElementById('fileProgress');
+
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('highlight');
+        });
+
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('highlight');
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('highlight');
+            const file = e.dataTransfer.files[0];
+            updateUploadUI(file);
+        });
+
+        cvInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            updateUploadUI(file);
+        });
+
+        function updateUploadUI(file) {
+            cvLabel.textContent = file.name;
+            fileProgress.style.display = 'block';
+            simulateFileUpload();
+        }
+
+        function simulateFileUpload() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                fileProgress.value = Math.min(progress, 100);
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
